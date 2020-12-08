@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 //Protocol that certifies that the VC that makes the calls uses the didUpdateWeather function.
 
@@ -23,6 +24,11 @@ struct WeatherManager {
     func fetchWeather(cityName: String) {
         let urlString = "\(weatherURL)&q=\(cityName)"
         performRequest(/*urlString*/with: urlString)
+    }
+    
+    func fetchWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees){
+        let urlString = "\(weatherURL)&lat=\(latitude)&lon=\(longitude)"
+        performRequest(with: urlString)
     }
     
     func performRequest(/* previous code::: urlString: String*/ with urlString: String) {
@@ -62,16 +68,17 @@ struct WeatherManager {
             let name = decodedData.name
             
             let weather = WeatherModel(conditionId: id, cityName: name, temperature: temp)
-//            print(weather.conditionName)
-//            print(weather.temperatureString)
-            
-            return weather
-            
+            //            print(weather.conditionName)
+            //            print(weather.temperatureString)
             //            print(decodedData.name)
             //            print(decodedData.id)
             //            print(decodedData.main.temp)
             //            print(decodedData.weather[0].description)
             //            print(decodedData.weather[0].id)
+            
+            return weather
+            
+            
         } catch{
             delegate?.didFailWithError(error: error)
             return nil
